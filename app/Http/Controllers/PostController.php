@@ -25,7 +25,7 @@ class PostController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        return Post::all(); 
+        return Post::with('user')->latest()->get(); 
     }
 
     /**
@@ -43,7 +43,7 @@ class PostController extends Controller implements HasMiddleware
         //Post with autorization
         $post = $request->user()->posts()->create($validate);
 
-        return $post;
+        return ['post' => $post,  'user' => $post->user];
     }
 
     /**
@@ -51,7 +51,7 @@ class PostController extends Controller implements HasMiddleware
      */
     public function show(post $post)
     {
-        return $post;
+        return ['post' => $post,  'user' => $post->user];
     }
 
     /**
@@ -69,7 +69,7 @@ class PostController extends Controller implements HasMiddleware
 
         $post->update($validate);
 
-        return $post;
+        return ['post' => $post,  'user' => $post->user];
     }
 
     /**
